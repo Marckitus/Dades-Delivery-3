@@ -7,3 +7,5 @@
 - heatmaps de kills.
 - pillar posicion cad 10 frames +-.
 - Bloques rotos x partida.
+
+Usar puerto 22 en firezila
