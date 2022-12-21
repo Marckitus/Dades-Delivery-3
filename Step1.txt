@@ -1,0 +1,9 @@
+- deaths: position & timer.
+- player gets hit.
+- posicion del player para ver donde pasa mas tiempo y que rutas toma.
+- muertes por liquido vs muertes por bichos.
+- asesinatos de bichos.
+- heatmaps de muertes.
+- heatmaps de kills.
+- pillar posicion cad 10 frames +-.
+- Bloques rotos x partida.
