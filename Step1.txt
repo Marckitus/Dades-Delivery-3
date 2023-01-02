@@ -1,11 +1,11 @@
-- deaths: position & timer.
-- player gets hit.
-- posicion del player para ver donde pasa mas tiempo y que rutas toma.
-- muertes por liquido vs muertes por bichos.
-- asesinatos de bichos.
+- deaths: (position, time)
+- player gets hit: (position, time)
+- posicion del player para ver donde pasa mas tiempo y que rutas toma: (list of position & time, list of velocity & time)
+- muertes por liquido vs muertes por bichos: (position, time)
+- asesinatos de bichos: (position, time)
 - heatmaps de muertes.
 - heatmaps de kills.
 - pillar posicion cad 10 frames +-.
-- Bloques rotos x partida.
+- Bloques rotos x partida: (position, time)
 
 Usar puerto 22 en firezila
