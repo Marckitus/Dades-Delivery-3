@@ -672,6 +672,7 @@ namespace Gamekit3D
         // Called by OnReceiveMessage and by DeathVolumes in the scene.
         public void Die(Damageable.DamageMessage damageMessage)
         {
+            StartCoroutine(DataAnalytics.AddData(new UserDeaths(), transform.position.ToString(), "", ""));
             m_Animator.SetTrigger(m_HashDeath);
             m_ForwardSpeed = 0f;
             m_VerticalSpeed = 0f;
