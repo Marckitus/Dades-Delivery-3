@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using static Gamekit3D.Damageable;
 
 public enum DataType
 {
@@ -10,6 +11,22 @@ public enum DataType
     KILLS,
     POSITION
 }
+
+public enum DamageType
+{
+    NONE,
+    FALL,
+    ACID,
+    SPITTER,
+    CHOMPER
+}
+
+public enum EnemyType
+{
+    SPITTER,
+    CHOMPER
+}
+
 public abstract class Data
 {
     public DataType type;
@@ -47,6 +64,7 @@ public class UserHit : Data
 
         dataForm.AddField("hitPosition", dataList[0]);
         dataForm.AddField("hitTime", dataList[1]);
+        dataForm.AddField("hitType", dataList[2]);
 
         return dataForm;
     }
@@ -102,6 +120,23 @@ public class DataAnalytics : MonoBehaviour
         else
         {
             Debug.Log("Data sended correctly: " + database.downloadHandler.text);
+        }
+    }
+
+    public static int GetDamageType(DamageMessage mess)
+    {
+        switch (mess.damager.name)
+        {
+            case "DeathVolume":
+                return (int)DamageType.FALL;
+            case "Acid":
+                return (int)DamageType.ACID;
+            case "Spit(Clone)":
+                return (int)DamageType.SPITTER;
+            case "Chomper":
+                return (int)DamageType.CHOMPER;
+            default:
+                return (int)DamageType.NONE;
         }
     }
 }
