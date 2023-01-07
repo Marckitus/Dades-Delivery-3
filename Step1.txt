@@ -1,11 +1,11 @@
 - deaths: (position, time) ---hecho en unity---
 - player gets hit: (position, time) ---hecho en unity---
-- posicion del player para ver donde pasa mas tiempo y que rutas toma: (list of position & time, list of velocity & time)
+- posicion del player para ver donde pasa mas tiempo y que rutas toma: (list of position & time, list of velocity & time) ---hecho en unity
 - muertes por liquido vs muertes por bichos: (position, time) ---hecho en unity---
 - asesinatos de bichos: (position, time) ---hecho en unity---
 - heatmaps de muertes.
 - heatmaps de kills.
 - pillar posicion cad 10 frames +-.
-- Bloques rotos x partida: (position, time)
+- Bloques rotos x partida: (position, time) ---hecho en unity---
 
 Usar puerto 22 en firezila

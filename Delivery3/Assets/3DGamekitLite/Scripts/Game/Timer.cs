@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    private float currentTime;
+    public float currentTime;
+    public int currentFrames;
     private int hours, minutes, seconds;
 
     public string GetCurrentTime()
@@ -15,6 +16,11 @@ public class Timer : MonoBehaviour
     private void Start()
     {
         InvokeRepeating("UpdateTimer", 0f, 1f);
+    }
+
+    private void Update()
+    {
+        currentFrames++;
     }
 
     private void UpdateTimer()

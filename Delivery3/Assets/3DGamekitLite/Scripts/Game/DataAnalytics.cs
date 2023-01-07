@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using static Gamekit3D.Damageable;
@@ -24,7 +23,8 @@ public enum DamageType
 public enum EnemyType
 {
     SPITTER,
-    CHOMPER
+    CHOMPER,
+    BLOCKS
 }
 
 public abstract class Data
@@ -101,6 +101,7 @@ public class UserPosition : Data
         dataForm.AddField("playerPosition", dataList[0]);
         dataForm.AddField("playerTime", dataList[1]);
         dataForm.AddField("playerVelocity", dataList[2]);
+        dataForm.AddField("userUID", dataList[3]);
 
         return dataForm;
     }
@@ -115,7 +116,7 @@ public class DataAnalytics : MonoBehaviour
 
         if (database.result != UnityWebRequest.Result.Success)
         {
-            print("Error downloading: " + database.error);
+            Debug.Log("Error downloading: " + database.error);
         }
         else
         {
@@ -137,6 +138,21 @@ public class DataAnalytics : MonoBehaviour
                 return (int)DamageType.CHOMPER;
             default:
                 return (int)DamageType.NONE;
+        }
+    }
+
+    public static int GetEnemyType(string name)
+    {
+        switch (name)
+        {
+            case "Spitter":
+                return (int)EnemyType.SPITTER;
+            case "Chomper":
+                return (int)EnemyType.CHOMPER;
+            case "Cube":
+                return (int)EnemyType.BLOCKS;
+            default:
+                return -1;
         }
     }
 }

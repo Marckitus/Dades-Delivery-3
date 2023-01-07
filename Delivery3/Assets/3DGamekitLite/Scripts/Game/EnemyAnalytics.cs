@@ -1,13 +1,11 @@
 using Gamekit3D;
 using Gamekit3D.Message;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Gamekit3D.Damageable;
 
 public class EnemyAnalytics : MonoBehaviour, IMessageReceiver
 {
-    protected Damageable m_Damageable;
+    private Damageable m_Damageable;
 
     private Timer timer;
 
@@ -25,23 +23,10 @@ public class EnemyAnalytics : MonoBehaviour, IMessageReceiver
         switch (type)
         {
             case MessageType.DEAD:
-                StartCoroutine(DataAnalytics.AddData(new UserKills(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), GetEnemyType(name).ToString()));
+                StartCoroutine(DataAnalytics.AddData(new UserKills(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetEnemyType(name).ToString()));
                 break;
             default:
                 break;
-        }
-    }
-
-    public int GetEnemyType(string name)
-    {
-        switch (name)
-        {
-            case "Spitter":
-                return (int)EnemyType.SPITTER;
-            case "Chomper":
-                return (int)EnemyType.CHOMPER;
-            default:
-                return -1;
         }
     }
 }
