@@ -1,8 +1,8 @@
-- deaths: (position, time)
-- player gets hit: (position, time)
+- deaths: (position, time) ---hecho en unity---
+- player gets hit: (position, time) ---hecho en unity---
 - posicion del player para ver donde pasa mas tiempo y que rutas toma: (list of position & time, list of velocity & time)
-- muertes por liquido vs muertes por bichos: (position, time)
-- asesinatos de bichos: (position, time)
+- muertes por liquido vs muertes por bichos: (position, time) ---hecho en unity---
+- asesinatos de bichos: (position, time) ---hecho en unity---
 - heatmaps de muertes.
 - heatmaps de kills.
 - pillar posicion cad 10 frames +-.
