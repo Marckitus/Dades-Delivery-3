@@ -8,7 +8,12 @@ namespace Gamekit3D
     public class DeathVolume : MonoBehaviour
     {
         public new AudioSource audio;
+        private Timer timer;
 
+        private void Start()
+        {
+            timer = FindObjectOfType<Timer>();
+        }
 
         void OnTriggerEnter(Collider other)
         {
@@ -16,6 +21,7 @@ namespace Gamekit3D
             if (pc != null)
             {
                 pc.Die(new Damageable.DamageMessage());
+                StartCoroutine(DataAnalytics.AddData(new UserDeaths(), pc.transform.position.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(name).ToString()));
             }
             if (audio != null)
             {

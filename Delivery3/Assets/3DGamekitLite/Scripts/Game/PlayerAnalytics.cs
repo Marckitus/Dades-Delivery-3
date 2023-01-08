@@ -40,10 +40,10 @@ public class PlayerAnalytics : MonoBehaviour, IMessageReceiver
         switch (type)
         {
             case MessageType.DAMAGED:
-                StartCoroutine(DataAnalytics.AddData(new UserHit(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage).ToString()));
+                StartCoroutine(DataAnalytics.AddData(new UserHit(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage.damager.name).ToString()));
                 break;
             case MessageType.DEAD:
-                StartCoroutine(DataAnalytics.AddData(new UserDeaths(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage).ToString()));
+                StartCoroutine(DataAnalytics.AddData(new UserDeaths(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage.damager.name).ToString()));
                 break;
             default:
                 break;

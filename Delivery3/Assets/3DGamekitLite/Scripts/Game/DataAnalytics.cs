@@ -120,13 +120,20 @@ public class DataAnalytics : MonoBehaviour
         }
         else
         {
-            Debug.Log("Data sended correctly: " + database.downloadHandler.text);
+            if (data.type == DataType.POSITION)
+            {
+                Debug.Log("Data of type " + data.type.ToString() + " sended");
+            }
+            else
+            {
+                Debug.Log("Data of type " + data.type.ToString() + " sended: " + database.downloadHandler.text);
+            }
         }
     }
 
-    public static int GetDamageType(DamageMessage mess)
+    public static int GetDamageType(string dmgName)
     {
-        switch (mess.damager.name)
+        switch (dmgName)
         {
             case "DeathVolume":
                 return (int)DamageType.FALL;
