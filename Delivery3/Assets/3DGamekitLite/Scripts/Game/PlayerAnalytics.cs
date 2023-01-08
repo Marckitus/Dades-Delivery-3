@@ -30,7 +30,7 @@ public class PlayerAnalytics : MonoBehaviour, IMessageReceiver
         if (timer.currentFrames >= currentInterval)
         {
             currentInterval = timer.currentFrames + positionInterval;
-            StartCoroutine(DataAnalytics.AddData(new UserPosition(), transform.position.ToString(), timer.GetCurrentTime(), player.velocity.ToString(), sessionID.ToString()));
+            StartCoroutine(DataAnalytics.AddData(DataType.POSITION, transform.position.ToString(), timer.GetCurrentTime(), player.velocity.ToString(), sessionID.ToString()));
         }
     }
 
@@ -40,10 +40,10 @@ public class PlayerAnalytics : MonoBehaviour, IMessageReceiver
         switch (type)
         {
             case MessageType.DAMAGED:
-                StartCoroutine(DataAnalytics.AddData(new UserHit(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage.damager.name).ToString()));
+                StartCoroutine(DataAnalytics.AddData(DataType.HIT, damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage.damager.name).ToString()));
                 break;
             case MessageType.DEAD:
-                StartCoroutine(DataAnalytics.AddData(new UserDeaths(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage.damager.name).ToString()));
+                StartCoroutine(DataAnalytics.AddData(DataType.DEATH, damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(damageMessage.damager.name).ToString()));
                 break;
             default:
                 break;

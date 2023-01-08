@@ -23,7 +23,7 @@ public class EnemyAnalytics : MonoBehaviour, IMessageReceiver
         switch (type)
         {
             case MessageType.DEAD:
-                StartCoroutine(DataAnalytics.AddData(new UserKills(), damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetEnemyType(name).ToString()));
+                StartCoroutine(DataAnalytics.AddData(DataType.KILLS, damageMessage.damageSource.ToString(), timer.GetCurrentTime(), DataAnalytics.GetEnemyType(name).ToString()));
                 break;
             default:
                 break;

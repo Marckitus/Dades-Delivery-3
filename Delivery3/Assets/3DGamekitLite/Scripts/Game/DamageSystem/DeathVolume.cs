@@ -21,7 +21,7 @@ namespace Gamekit3D
             if (pc != null)
             {
                 pc.Die(new Damageable.DamageMessage());
-                StartCoroutine(DataAnalytics.AddData(new UserDeaths(), pc.transform.position.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(name).ToString()));
+                StartCoroutine(DataAnalytics.AddData(DataType.DEATH, pc.transform.position.ToString(), timer.GetCurrentTime(), DataAnalytics.GetDamageType(name).ToString()));
             }
             if (audio != null)
             {
