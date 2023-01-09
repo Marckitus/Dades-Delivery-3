@@ -28,6 +28,7 @@ public enum EnemyType
     BLOCKS
 }
 
+[Serializable]
 public abstract class Data
 {
     public DataType type;
@@ -36,14 +37,18 @@ public abstract class Data
 
     public abstract WWWForm FillData(string[] dataList);
 }
+
+[Serializable]
 public class UserDeaths : Data
 {
-    public DamageType deathType;
+    public string deathPosition;
+    public string deathTime;
+    public string deathType;
     public UserDeaths()
     {
         type = DataType.DEATH;
         fileName = "UserDeaths.php";
-        fileName = "UserDeathsReader.php";
+        readerFileName = "UserDeathsReader.php";
     }
     public override WWWForm FillData(string[] dataList)
     {
@@ -56,14 +61,18 @@ public class UserDeaths : Data
         return dataForm;
     }
 }
+
+[Serializable]
 public class UserHit : Data
 {
-    public DamageType hitType;
+    public string hitPosition;
+    public string hitTime;
+    public string hitType;
     public UserHit()
     {
         type = DataType.HIT;
         fileName = "UserHits.php";
-        fileName = "UserHitsReader.php";
+        readerFileName = "UserHitsReader.php";
     }
     public override WWWForm FillData(string[] dataList)
     {
@@ -76,14 +85,18 @@ public class UserHit : Data
         return dataForm;
     }
 }
+
+[Serializable]
 public class UserKills : Data
 {
-    public EnemyType enemyType;
+    public string enemyPosition;
+    public string enemyKillTime;
+    public string enemyKillType;
     public UserKills()
     {
         type = DataType.KILLS;
         fileName = "UserKills.php";
-        fileName = "UserKillsReader.php";
+        readerFileName = "UserKillsReader.php";
     }
     public override WWWForm FillData(string[] dataList)
     {
@@ -96,15 +109,19 @@ public class UserKills : Data
         return dataForm;
     }
 }
+
+[Serializable]
 public class UserPosition : Data
 {
-    public Vector3 playerVelocity;
-    public System.Guid sessionUID;
+    public string playerPosition;
+    public string playerTime;
+    public string playerVelocity;
+    public string userUID;
     public UserPosition()
     {
         type = DataType.POSITION;
         fileName = "UserPosition.php";
-        fileName = "UserPositionReader.php";
+        readerFileName = "UserPositionReader.php";
     }
     public override WWWForm FillData(string[] dataList)
     {
@@ -144,12 +161,13 @@ public class DataAnalytics : MonoBehaviour
         }
     }
 
-    public static IEnumerator ReadData(Data data, Data[] dataList)
+    public static IEnumerator ReadData(Data data, System.Action<Data[]> dataList)
     {
         string linkName = "https://citmalumnes.upc.es/~polvp1/" + data.readerFileName;
-        UnityWebRequest database = UnityWebRequest.Post(linkName, new WWWForm());
+        WWWForm dataForm = new WWWForm();
+        UnityWebRequest database = UnityWebRequest.Post(linkName, dataForm);
         yield return database.SendWebRequest();
-
+        
         if (database.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Error downloading: " + database.error);
@@ -157,17 +175,19 @@ public class DataAnalytics : MonoBehaviour
         else
         {
             Debug.Log("Data of type " + data.type.ToString() + " received");
-
             switch (data.type)
             {
                 case DataType.DEATH:
-                    dataList = JsonUtility.FromJson<UserDeaths[]>(database.downloadHandler.text);
+                    dataList(Newtonsoft.Json.JsonConvert.DeserializeObject<UserDeaths[]>(database.downloadHandler.text));
                     break;
                 case DataType.HIT:
+                    dataList(Newtonsoft.Json.JsonConvert.DeserializeObject<UserHit[]>(database.downloadHandler.text));
                     break;
                 case DataType.KILLS:
+                    dataList(Newtonsoft.Json.JsonConvert.DeserializeObject<UserKills[]>(database.downloadHandler.text));
                     break;
                 case DataType.POSITION:
+                    dataList(Newtonsoft.Json.JsonConvert.DeserializeObject<UserPosition[]>(database.downloadHandler.text));
                     break;
                 default:
                     break;
