@@ -9,33 +9,92 @@ public class DataDebugDrawer : MonoBehaviour
     public System.Action<Data[]> deathsCallback;
     private UserDeaths[] deathsData;
 
+    public System.Action<Data[]> hitsCallback;
+    private UserHit[] hitsData;
+    
+    public System.Action<Data[]> killsCallback;
+    private UserKills[] killsData;
+    
+    public System.Action<Data[]> positionCallback;
+    private UserPosition[] positionData;
+
     // Color de la línea que se dibujará
-    public Color lineColor = Color.red;
+    public Color deathsColor = Color.red;
+    public bool deathsActive = true;
+    [Space]
+    public Color hitsColor = Color.yellow;
+    public bool hitsActive = true;
+    [Space]
+    public Color killsColor = Color.green;
+    public bool killsActive = true;
+    [Space]
+    public Color positionColor = Color.blue;
+    public bool positionActive = true;
 
     [ButtonMethod]
     public void GetData()
     {
-        UserDeaths death = new UserDeaths();
-
         deathsCallback = (result) =>
         {
             deathsData = (UserDeaths[])result;
         };
+        StartCoroutine(DataAnalytics.ReadData(new UserDeaths(), deathsCallback));
 
-        StartCoroutine(DataAnalytics.ReadData(death, deathsCallback));
+        hitsCallback = (result) =>
+        {
+            hitsData = (UserHit[])result;
+        };
+        StartCoroutine(DataAnalytics.ReadData(new UserHit(), hitsCallback));
+
+        killsCallback = (result) =>
+        {
+            killsData = (UserKills[])result;
+        };
+        StartCoroutine(DataAnalytics.ReadData(new UserKills(), killsCallback));
+
+        positionCallback = (result) =>
+        {
+            positionData = (UserPosition[])result;
+        };
+        StartCoroutine(DataAnalytics.ReadData(new UserPosition(), positionCallback));
     }
 
     private void OnDrawGizmos()
     {
-        if (deathsData.Length > 0)
+        if (deathsActive && deathsData  != null && deathsData.Length > 0)
         {
-            for (int i = 0; i < deathsData.Length - 1; i++)
+            for (int i = 0; i < deathsData.Length; i++)
             {
-                Gizmos.color = Color.red;
+                Gizmos.color = deathsColor;
                 Gizmos.DrawCube(Utils.StringToVector3(deathsData[i].deathPosition), new Vector3(1,1,1));
-                Debug.Log(Utils.StringToVector3(deathsData[i].deathPosition));
             }
         }
-        
+
+        if (killsActive && killsData != null && killsData.Length > 0)
+        {
+            for (int i = 0; i < killsData.Length; i++)
+            {
+                Gizmos.color = killsColor;
+                Gizmos.DrawCube(Utils.StringToVector3(killsData[i].enemyPosition), new Vector3(1, 1, 1));
+            }
+        }
+
+        if (hitsActive && hitsData != null && hitsData.Length > 0)
+        {
+            for (int i = 0; i < hitsData.Length; i++)
+            {
+                Gizmos.color = hitsColor;
+                Gizmos.DrawCube(Utils.StringToVector3(hitsData[i].hitPosition), new Vector3(1, 1, 1));
+            }
+        }
+
+        if (positionActive && positionData != null && positionData.Length > 0)
+        {
+            for (int i = 0; i < positionData.Length; i++)
+            {
+                Gizmos.color = positionColor;
+                Gizmos.DrawCube(Utils.StringToVector3(positionData[i].playerPosition), new Vector3(.3f, .3f, .3f));
+            }
+        }
     }
 }
