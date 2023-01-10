@@ -6,32 +6,42 @@ using MyBox;
 
 public class Heatmap : MonoBehaviour
 {
-    public Vector4[] positions;
-    public Vector4[] properties;
-
     public Material material;
+    public Vector3[] positions;
+    public DataType dataType;
 
-    public int count = 50;
+    private DataDebugDrawer dataDebug;
 
-    void Start()
+    private void Start()
     {
-        positions = new Vector4[count];
-        properties = new Vector4[count];
+        dataDebug = FindObjectOfType<DataDebugDrawer>();
+    }
 
-        for (int i = 0; i < positions.Length; i++)
+    [ButtonMethod]
+    public void ResetPositions()
+    {
+        dataDebug = FindObjectOfType<DataDebugDrawer>();
+        if (dataDebug)
         {
-            positions[i] = new Vector4(Random.Range(-30.4f, +80.4f), 2, Random.Range(-44.4f, +44.4f), 0);
-            properties[i] = new Vector4(Random.Range(0f, 2.25f), Random.Range(-0.25f, 6f), 0, 0);
+            positions = new Vector3[0];
+            positions = dataDebug.GetDataPosition(dataType);
         }
     }
 
-    void Update()
+    [ButtonMethod]
+    public void UpdateMaterial()
     {
-        for (int i = 0; i < positions.Length; i++)
-            positions[i] += new Vector4(Random.Range(-0.1f, +0.1f), Random.Range(-0.1f, +0.1f), 0, 0) * Time.deltaTime;
-
-        material.SetInt("_Points_Length", count);
-        material.SetVectorArray("_Points", positions);
-        material.SetVectorArray("_Properties", properties);
-    }
+        if (positions.Length > 0)
+        {
+            material.SetInt("_Points_Length", positions.Length);
+            Vector4[] points = new Vector4[positions.Length];
+            Vector4[] properties = new Vector4[positions.Length];
+            for (int i = 0; i < positions.Length; i++)
+            {
+                points[i] = new Vector4(positions[i].x, positions[i].y, positions[i].z, 0);
+                properties[i] = new Vector4(5, 1, 0, 0);
+            }
+            material.SetVectorArray("_Points", points);
+            material.SetVectorArray("_Properties", properties);
+        }    }
 }

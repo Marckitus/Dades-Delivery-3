@@ -97,4 +97,43 @@ public class DataDebugDrawer : MonoBehaviour
             }
         }
     }
+
+    public Vector3[] GetDataPosition(DataType dataType)
+    {
+        Vector3[] newVector = new Vector3[0];
+        switch (dataType)
+        {
+            case DataType.DEATH:
+                newVector = new Vector3[deathsData.Length];
+                for (int i = 0; i < deathsData.Length; i++)
+                {
+                    newVector[i] = Utils.StringToVector3(deathsData[i].deathPosition);
+                }
+                break;
+            case DataType.HIT:
+                newVector = new Vector3[hitsData.Length];
+                for (int i = 0; i < hitsData.Length; i++)
+                {
+                    newVector[i] = Utils.StringToVector3(hitsData[i].hitPosition);
+                }
+                break;
+            case DataType.KILLS:
+                newVector = new Vector3[killsData.Length];
+                for (int i = 0; i < killsData.Length; i++)
+                {
+                    newVector[i] = Utils.StringToVector3(killsData[i].enemyPosition);
+                }
+                break;
+            case DataType.POSITION:
+                newVector = new Vector3[positionData.Length];
+                for (int i = 0; i < positionData.Length; i++)
+                {
+                    newVector[i] = Utils.StringToVector3(positionData[i].playerPosition);
+                }
+                break;
+            default:
+                break;
+        }
+        return newVector;
+    }
 }
