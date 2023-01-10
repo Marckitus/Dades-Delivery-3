@@ -1,9 +1,4 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Alan Zucconi
-// www.alanzucconi.com
-Shader "Hidden/Heatmap" {
+﻿Shader "Hidden/Heatmap" {
 		Properties{
 			_HeatTex("Texture", 2D) = "white" {}
 		}

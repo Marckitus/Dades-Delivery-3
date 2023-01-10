@@ -33,9 +33,6 @@ public class Heatmap : MonoBehaviour
     {
         if (positions.Length > 0)
         {
-            material.SetVectorArray("_Points", new Vector4[positions.Length]);
-            material.SetVectorArray("_Properties", new Vector4[positions.Length]);
-
             material.SetInt("_Points_Length", positions.Length);
             Vector4[] points = new Vector4[positions.Length];
             Vector4[] properties = new Vector4[positions.Length];
