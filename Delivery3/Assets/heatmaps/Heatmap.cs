@@ -33,15 +33,23 @@ public class Heatmap : MonoBehaviour
     {
         if (positions.Length > 0)
         {
+            material.SetVectorArray("_Points", new Vector4[positions.Length]);
+            material.SetVectorArray("_Properties", new Vector4[positions.Length]);
+
             material.SetInt("_Points_Length", positions.Length);
             Vector4[] points = new Vector4[positions.Length];
             Vector4[] properties = new Vector4[positions.Length];
+
             for (int i = 0; i < positions.Length; i++)
             {
                 points[i] = new Vector4(positions[i].x, positions[i].y, positions[i].z, 0);
-                properties[i] = new Vector4(5, 1, 0, 0);
+                properties[i] = new Vector4(5, 1.0f, 0, 0);
             }
+
             material.SetVectorArray("_Points", points);
             material.SetVectorArray("_Properties", properties);
-        }    }
+
+            Debug.Log(material.GetVectorArray("_Points").Length);
+        }   
+    }
 }

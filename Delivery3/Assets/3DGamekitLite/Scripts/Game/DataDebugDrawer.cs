@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
+using System.ComponentModel;
+using System.Linq;
 
 public class DataDebugDrawer : MonoBehaviour
 {
@@ -16,7 +17,10 @@ public class DataDebugDrawer : MonoBehaviour
     private UserKills[] killsData;
     
     public System.Action<Data[]> positionCallback;
+    public bool[] pathActives;
     private UserPosition[] positionData;
+    private Dictionary<System.Guid, Vector3[]> playerPositions;
+    private Color[] pathColors;
 
     // Color de la línea que se dibujará
     public Color deathsColor = Color.red;
@@ -55,6 +59,7 @@ public class DataDebugDrawer : MonoBehaviour
         positionCallback = (result) =>
         {
             positionData = (UserPosition[])result;
+            playerPositions = GetPositionsByUID(positionData);
         };
         StartCoroutine(DataAnalytics.ReadData(new UserPosition(), positionCallback));
     }
@@ -63,37 +68,45 @@ public class DataDebugDrawer : MonoBehaviour
     {
         if (deathsActive && deathsData  != null && deathsData.Length > 0)
         {
+            Gizmos.color = deathsColor;
             for (int i = 0; i < deathsData.Length; i++)
             {
-                Gizmos.color = deathsColor;
                 Gizmos.DrawCube(Utils.StringToVector3(deathsData[i].deathPosition), new Vector3(1,1,1));
             }
         }
 
         if (killsActive && killsData != null && killsData.Length > 0)
         {
+            Gizmos.color = killsColor;
             for (int i = 0; i < killsData.Length; i++)
-            {
-                Gizmos.color = killsColor;
+            { 
                 Gizmos.DrawCube(Utils.StringToVector3(killsData[i].enemyPosition), new Vector3(1, 1, 1));
             }
         }
 
         if (hitsActive && hitsData != null && hitsData.Length > 0)
         {
+            Gizmos.color = hitsColor;
             for (int i = 0; i < hitsData.Length; i++)
             {
-                Gizmos.color = hitsColor;
                 Gizmos.DrawCube(Utils.StringToVector3(hitsData[i].hitPosition), new Vector3(1, 1, 1));
             }
         }
 
         if (positionActive && positionData != null && positionData.Length > 0)
         {
-            for (int i = 0; i < positionData.Length; i++)
+            for (int i = 0; i < playerPositions.Count; i++)
             {
-                Gizmos.color = positionColor;
-                Gizmos.DrawCube(Utils.StringToVector3(positionData[i].playerPosition), new Vector3(.3f, .3f, .3f));
+                if (pathActives[i])
+                {
+                    Vector3[] positions = playerPositions.ElementAt(i).Value;
+
+                    Gizmos.color = pathColors[i];
+                    for (int j = 0; j < positions.Length; j++)
+                    {
+                        Gizmos.DrawCube(positions[j], new Vector3(.3f, .3f, .3f));
+                    }
+                }
             }
         }
     }
@@ -135,5 +148,51 @@ public class DataDebugDrawer : MonoBehaviour
                 break;
         }
         return newVector;
+    }
+
+    public Dictionary<System.Guid, Vector3[]> GetPositionsByUID(UserPosition[] positions)
+    {
+        // Crear un diccionario vacío
+        var positionsByUID = new Dictionary<System.Guid, Vector3[]>();
+
+        // Iterar sobre cada UserPosition en el array
+        foreach (var position in positions)
+        {
+            // Obtener la userUID de la posición actual
+            System.Guid uid = System.Guid.Parse(position.userUID);
+
+            // Convertir la posición actual a un Vector3
+            var vec3 = Utils.StringToVector3(position.playerPosition);
+
+            // Si el diccionario no tiene una entrada para la userUID actual, crear una nueva
+            if (!positionsByUID.ContainsKey(uid))
+            {
+                positionsByUID[uid] = new Vector3[] { vec3 };
+            }
+            else
+            {
+                // Añadir el Vector3 al array en la entrada del diccionario correspondiente a la userUID
+                var currentArr = positionsByUID[uid];
+                var newArr = new Vector3[currentArr.Length + 1];
+                currentArr.CopyTo(newArr, 0);
+                newArr[currentArr.Length] = vec3;
+                positionsByUID[uid] = newArr;
+            }
+        }
+
+        pathColors = new Color[positionsByUID.Count];
+        for (int i = 0; i < pathColors.Length; i++)
+        {
+            pathColors[i] = Random.ColorHSV();
+        }
+
+        pathActives = new bool[positionsByUID.Count];
+        for (int i = 0; i < pathActives.Length; i++)
+        {
+            pathActives[i] = true;
+        }
+
+        // Devolver el diccionario
+        return positionsByUID;
     }
 }
