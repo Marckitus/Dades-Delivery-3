@@ -1,23 +1,23 @@
-<?php
+<?php error_reporting (E_ALL ^ E_NOTICE);
  $servername = "localhost";
  $username = "polvp1";
  $password = "Ub7vUH4uQN";
  $database = "polvp1";
 
  $db = new mysqli($servername, $username, $password, $database);
- if($db->connection_error) {
+ if($db->connect_error) {
      die("Connection failed: " . $db->connect_error);
 }
-$PlayerPosition = $_POST["playerposition"];
+$PlayerPosition = $_POST["playerPosition"];
 $PlayerTime = $_POST["playerTime"];
 $PlayerVelocity = $_POST["playerVelocity"];
-$PlayerTimeVelocity = $_POST["playerTimeVelocity"];
-$query = "INSERT INTO UserHit
-        SET playerposition = '$PlayerPosition',
+$UserUID = $_POST["userUID"];
+
+$query = "INSERT INTO UserPosition
+        SET playerPosition = '$PlayerPosition',
         playerTime = '$PlayerTime',
         playerVelocity = '$PlayerVelocity',
-        playerTimeVelocity = '$PlayerTimeVelocity'";
+        userUID = '$UserUID'";
 $result = mysqli_query($db,$query) or die('just  died');
-$last_inserted = mysqli_insert_id($db);
-print($last_inserted);
+print("$PlayerPosition , $PlayerTime , $PlayerVelocity, $UserUID");
 ?>

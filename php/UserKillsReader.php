@@ -8,13 +8,19 @@
  if($db->connect_error) {
      die("Connection failed: " . $db->connect_error);
 }
-$EnemyPosition = $_POST["enemyPosition"];
-$EnemyKillTime = $_POST["enemyKillTime"];
-$EnemyKillType = $_POST["enemyKillType"];
-$query = "INSERT INTO UserKills
-        SET enemyPosition = '$EnemyPosition',
-        enemyKillTime = '$EnemyKillTime',
-        enemyKillType = '$EnemyKillType'";
+
+$query = "SELECT enemyPosition, enemyKillTime, enemyKillType from UserKills";
 $result = mysqli_query($db,$query) or die('just  died');
-print("$EnemyPosition , $EnemyKillTime , $EnemyKillType");
+
+if ($result->num_rows > 0) {
+        $table = array();
+        while($row = $result->fetch_assoc()) {
+            $table[] = $row;
+        }
+        echo json_encode($table);
+    } else {
+        echo "0 results";
+    }
+    
+    $db->close();
 ?>
